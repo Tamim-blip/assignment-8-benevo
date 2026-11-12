@@ -1,10 +1,27 @@
+'use client'
+
 import Link from "next/link";
 import { Sprout } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
+import { signOut, useSession } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
-export function Navbar() {
+
+export  function Navbar() {
+
+  const {data : session } = useSession()
+
+  const user = session?.user
+
+
+  const HandleSignOut =  () => {
+
+    signOut()
+    redirect('/')
+  }
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#DCE8DC] bg-[#FFFFFF] text-[#292D29]">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -32,7 +49,17 @@ export function Navbar() {
         {/* Right: theme toggle + login */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <ThemeToggle />
-          <Link
+         {
+          user? <>
+
+          <div>
+
+             <Button onClick={HandleSignOut} variant={"destructive"} className='rounded-full'>Sign out</Button>
+          </div>
+
+
+          </> : <>
+           <Link
             href="/login"
             aria-label="Log in"
             className={cn(
@@ -42,6 +69,8 @@ export function Navbar() {
           >
             Login
           </Link>
+          </>
+         }
         </div>
       </div>
     </header>

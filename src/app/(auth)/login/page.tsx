@@ -37,6 +37,23 @@ export default function LoginPage() {
       console.log(error.message)
     }
   }
+
+
+  const HandleGoogleSignIn = async() => {
+
+    const data = await signIn.social({
+        provider : "google"
+    })
+
+    
+  }
+
+  const HandleGitHubSignIn = async() => {
+
+    const data = await signIn.social({
+        provider : "github"
+    })
+  }
   return (
     <section className="grid w-full flex-1 lg:grid-cols-2">
       <AuthBrandPanel />
@@ -100,6 +117,7 @@ export default function LoginPage() {
                 type="button"
                 variant="outline"
                 className="h-10 rounded-full"
+                onClick={HandleGoogleSignIn}
               >
                 <GoogleIcon />
                 Continue with Google
@@ -108,6 +126,7 @@ export default function LoginPage() {
                 type="button"
                 variant="outline"
                 className="h-10 rounded-full"
+                onClick={HandleGitHubSignIn}
               >
                 <GitHubIcon />
                 Continue with GitHub

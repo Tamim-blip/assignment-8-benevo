@@ -16,7 +16,7 @@ import {
   AuthDivider,
 } from "@/components/auth/brand-panel";
 import { GitHubIcon, GoogleIcon } from "@/components/auth/icons";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 
 export default function SignUp() {
@@ -43,6 +43,21 @@ export default function SignUp() {
     }
   }
 
+  const HandleGoogleSignIn = async() => {
+
+    const data = await signIn.social({
+        provider : "google"
+    })
+
+    console.log(data)
+  }
+
+  const HandleGitHubSignIn = async() => {
+
+    const data = await signIn.social({
+        provider : "github"
+    })
+  }
   return (
     <section className="grid w-full flex-1 lg:grid-cols-2">
       <AuthBrandPanel />
@@ -160,6 +175,7 @@ export default function SignUp() {
                 type="button"
                 variant="outline"
                 className="h-10 rounded-full"
+                onClick={HandleGoogleSignIn}
               >
                 <GoogleIcon />
                 Continue with Google
@@ -168,6 +184,7 @@ export default function SignUp() {
                 type="button"
                 variant="outline"
                 className="h-10 rounded-full"
+                onClick={HandleGitHubSignIn}
               >
                 <GitHubIcon />
                 Continue with GitHub
