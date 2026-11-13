@@ -1,40 +1,50 @@
 # cat-hermione
 
-Next.js 16 App Router app (npm; use `package-lock.json`, not other package managers). No tests, no CI.
+Next.js 16 App Router app (Next 16.4.6, React 19.3, Tailwind v4; npm — use `package-lock.json`, not other package managers). No tests, no CI.
 
 - **The git repo root is `/Users/m4air/Desktop/All-Projects` (the workspace root), not this project directory**, and it has no commits yet. `git status` shows unrelated projects — scope file references carefully; don't stage the world.
 
-## Product brief (design-only phase — user drives step by step)
+## Product brief (user drives the project step by step — follow their lead)
 
-- **Product**: community-driven event management platform — users create, join, and track local social service events.
+- **Product**: community-driven event management platform ("Benevo") — users create, join, and track local social service events.
 - **Categories**: plantation, blood donation, cleaning, education, winter clothes donation.
-- **Core palette**: forest (primary), sage (secondary/muted), cream (background), orange (accent/CTA), charcoal (text/foreground) — to be mapped onto shadcn tokens in `src/app/globals.css`.
-- **Constraints**: design only, no complex functionality (mock data is fine); consistent text sizes and button styling app-wide via reusable components; keep folder structure organized (`src/components/ui` = shadcn primitives, domain components and layout components in separate folders); fully responsive (mobile → desktop) on every page and component.
+- **Core palette**: forest (primary), sage (secondary/muted), cream (background), orange (accent/CTA), charcoal (text/foreground) — mapped onto shadcn tokens in `src/app/globals.css`.
+- **Constraints**: consistent text sizes and button styling app-wide via reusable components; keep folder structure organized (`src/components/ui` = shadcn primitives, domain components and layout components in separate folders); fully responsive (mobile → desktop) on every page and component.
+
+## Auth & data flow (real, not mocked)
+
+- **Auth is better-auth** (v1.7) backed by **MongoDB** via `@better-auth/mongo-adapter`: server config in `src/lib/auth.ts`, client in `src/lib/auth-client.ts` (`authClient` plus `signIn`/`signUp`/`signOut`/`useSession`), HTTP handler at `src/app/api/auth/[...all]/route.ts` via `toNextJsHandler`. Email/password + Google/GitHub social providers are enabled. Always use `useSession()` from `@/lib/auth-client` for the current user.
+- **Event data lives in an external backend**, not this repo: pages/forms `fetch` `${process.env.NEXT_PUBLIC_API_URL}/…` (e.g. `/recent-events`, `/create-events`). The env var must exist in `.env`.
+- Required env vars (all in `.env` at the project root, not `.env.local`): `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `MONGO_DB_CONNECTION_URI`, `GOOGLE_CLIENT_ID/SECRET`, `GITHUB_CLIENT_ID/SECRET`, `NEXT_PUBLIC_API_URL`.
 
 ## Commands
 
-- Dev: `npm run dev` · Build: `npm run build` · Lint: `npm run lint`
-- No test script exists. Typecheck with `npx tsc --noEmit` (no dedicated script).
-- `npm run lint` currently FAILS at baseline: 2 pre-existing `react-hooks/set-state-in-effect` errors in scaffolded files (`src/components/ui/carousel.tsx`, `src/hooks/use-mobile.ts`). Verify your changes by comparing the error count/paths, not by expecting a clean run.
+- Dev: `npm run dev` · Build: `npm run build` · Lint: `npm run lint` (bare `eslint`)
+- No test script exists. Typecheck with `npx tsc --noEmit` (no dedicated script; currently clean).
+- `npm run lint` currently FAILS at baseline: 2 pre-existing `react-hooks/set-state-in-effect` errors in scaffolded files (`src/components/ui/carousel.tsx` ~line 98, `src/hooks/use-mobile.ts` line 14), plus 4 unused-var warnings (`src/app/(auth)/login/page.tsx`, `src/app/(auth)/sign-up/page.tsx`, `src/components/home/hero.tsx`). Verify your changes by comparing the error/warning count and paths, not by expecting a clean run.
 
 ## Gotchas
 
 - **Components use `@base-ui/react`, NOT Radix.** This repo uses shadcn/ui's `base-nova` style, so `src/components/ui/*` import primitives from `@base-ui/react/*`. Don't add `@radix-ui/*` imports or copy Radix-based shadcn snippets from older examples.
 - Add new UI components via the shadcn CLI (`components.json` defines aliases and style); Tailwind CSS v4 is configured with no `tailwind.config.*` — theme/custom styles live in `src/app/globals.css`.
-- `next.config.ts` enables `reactCompiler: true` and `cacheComponents: true`. With cacheComponents, async data fetching must happen inside `<Suspense>` boundaries using cache-friendly APIs; components that read request data can't silently be static.
+- **Route group is spelled `(acticities)`** (sic, `src/app/(acticities)/…` — events, create-events, joined-events, manage-events). Intentional; don't "fix" the name, it's referenced across the codebase.
 - Path alias: `@/*` → `src/*`.
 - A dev server is usually already running on `localhost:3000`. Starting a second `next dev` fails with "Another next dev server is already running" (PID in `.next/dev/logs/next-development.log`); verify routes by curling port 3000 instead of launching your own.
+- `next.config.ts` sets `reactCompiler: true`, `cacheComponents: false`, `partialPrefetching: false`. React Compiler is why the `react-hooks` lint errors are errors.
 
 ## Design conventions (Benevo)
 
 - Palette is mapped onto shadcn tokens in `src/app/globals.css`: forest → `primary`, sage → `secondary`/`muted`, cream → `background`, orange → `accent`/`ring`, charcoal → `foreground`. Use tokens (`bg-primary`, `text-accent`, …), never raw hex/oklch in components.
-- Header (`src/components/layout/site-header.tsx`) is always forest (`bg-primary`); the Login CTA is an orange (`bg-accent`) rounded-full pill — reuse this exact class combo for CTAs app-wide: `buttonVariants() + "h-9 rounded-full px-4 sm:h-10 sm:px-5"`.
+- Header is `src/components/layout/navBar.tsx` (white bg with raw-hex borders/text — legacy from the design mock). The Login CTA is a forest rounded-full pill using the `buttonVariants()` sizing combo `h-9 rounded-full px-4 sm:h-10 sm:px-5` — reuse for CTAs app-wide (navBar currently uses raw hex `bg-[#254F36] hover:bg-[#193F2D]`; prefer tokens like `bg-primary` in new code).
 - Nav links: `text-xs font-semibold uppercase tracking-widest` (sm: `text-sm`); section headings: `text-3xl sm:text-4xl font-bold tracking-tight`; body text: `text-base sm:text-lg`.
 - Theme toggle stores to localStorage key `benevo-theme`; a no-flash inline script in `layout.tsx` applies the `dark` class. Respect `prefers-color-scheme` as the default.
 - Page containers: `mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8`.
 - Hero (`src/components/home/hero.tsx`): forest panel + image split `lg:grid-cols-[3fr_2fr]`; H1 is `text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight`; avatar badges use lucide icons, never photos; floating tag pills are absolutely positioned with rotate classes over the image.
 - Reusable section pieces live in `src/components/common/`: `SectionHeading` (orange uppercase eyebrow, h2 `text-3xl sm:text-4xl`, muted description) and `FeatureCard` (rounded-2xl border card, size-11 rounded-full icon chip with token tint like `bg-accent/15 text-accent`, title `text-lg font-semibold`, muted `text-sm` description). Use these for all future sections instead of ad-hoc markup.
-- Auth forms use **HeroUI** (`@heroui/react`, global styles via `@import "@heroui/styles"` in globals.css), NOT the shadcn field system. Retarget HeroUI colors with the `.heroui-scope` class in globals.css (don't override at `:root` — HeroUI's `--muted` means muted text while shadcn's means muted background); wrap the form column in `heroui-scope`. Keep HeroUI `validate` callbacks untouched when restyling. Shared auth pieces live in `src/components/auth/` (`AuthBrandPanel`, `AuthDivider`, `GoogleIcon`/`GitHubIcon`).
+- Auth forms use **HeroUI** (`@heroui/react`, global styles via `@import "@heroui/styles"` in globals.css), NOT the shadcn field system. Retarget HeroUI colors with the `.heroui-scope` class in globals.css (don't override at `:root` — HeroUI's `--muted` means muted text while shadcn's means muted background); wrap the form column in `heroui-scope`. Keep HeroUI `validate` callbacks untouched when restyling. Shared auth pieces live in `src/components/auth/` (`brand-panel.tsx`: `AuthBrandPanel`/`AuthDivider`; `icons.tsx`: `GoogleIcon`/`GitHubIcon`).
+- HeroUI quirks: `validate` goes on `TextField`, never on `Input`; `Select.Value` has no `placeholder` prop — use a render-prop child (`{(v) => v.selectedText || <span className="text-muted-foreground">…</span>}`) and set `textValue` on `ListBox.Item`s; RAC-based `Select` submits its value into FormData when given `name`. Forms POST real data now (auth via `signIn` from `@/lib/auth-client`, events via `fetch` to `NEXT_PUBLIC_API_URL`).
+- `cacheComponents` is currently **false** in `next.config.ts` (it was true earlier and caused "Blocking Route" prerender errors for `new Date()` in client components). The fix pattern is still in place and should stay: split the client form into its own file and render it inside `<Suspense>` from a server parent — see `src/app/(acticities)/create-events/` (`page.tsx` wraps `create-events-form.tsx`). Don't paper over prerender issues with `useEffect`+`setState` (React Compiler lint rejects that).
+- Base-nova `DropdownMenuItem` becomes a link via the render prop: `render={<Link href="…" />}` (Base UI Menu.Item pattern, see `navBar.tsx`). `redirect()` from `next/navigation` does NOT navigate when called in a client event handler after an await — use `router.push()` and `form.reset()` (RAC inputs respond to native form reset) instead.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

@@ -57,7 +57,7 @@ export function Hero() {
           </Link>
 
           <Link
-            href="/events/create"
+            href="/create-events"
             className="flex h-11 items-center gap-2 rounded-full border border-[#C8D8C7] bg-white px-6 text-sm font-semibold text-[#315D3C] transition-colors hover:bg-[#EAF2E7]"
           >
             Start an Event

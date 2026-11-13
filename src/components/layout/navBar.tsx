@@ -1,12 +1,28 @@
 'use client'
 
 import Link from "next/link";
-import { Sprout } from "lucide-react";
+import { Sprout, CalendarCheck, CalendarPlus, LogOut, SquarePen } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
 import { signOut, useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 
 
 export  function Navbar() {
@@ -19,7 +35,7 @@ export  function Navbar() {
   const HandleSignOut =  () => {
 
     signOut()
-    redirect('/')
+    redirect('/login')
   }
   
   return (
@@ -52,7 +68,74 @@ export  function Navbar() {
          {
           user? <>
 
-          <div>
+          <div className="flex items-center gap-4">
+
+             <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="rounded-full ring-2 ring-[#DCE8DC] hover:ring-[#75A77A]"><Avatar>
+          <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? "Profile"} />
+          <AvatarFallback className="bg-primary text-xs text-primary-foreground">
+            {(user?.name ?? "U")
+              .split(" ")
+              .map((part) => part[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase()}
+          </AvatarFallback>
+        </Avatar></Button>} />
+      <DropdownMenuContent align="end" className="w-64">
+        {/* User identity header */}
+        <div className="flex items-center gap-3 px-2 py-2.5">
+          <Avatar className="size-10">
+            <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? "Profile"} />
+            <AvatarFallback className="bg-primary text-sm text-primary-foreground">
+              {(user?.name ?? "U")
+                .split(" ")
+                .map((part) => part[0])
+                .slice(0, 2)
+                .join("")
+                .toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex min-w-0 flex-col">
+            <p className="truncate text-sm font-semibold">{user?.name}</p>
+            <p className="truncate text-xs text-muted-foreground">
+              {user?.email}
+            </p>
+          </div>
+        </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            render={<Link href="/create-events" />}
+            className="gap-2.5 py-2"
+          >
+            <CalendarPlus className="text-muted-foreground" />
+            Create Event
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            render={<Link href="/manage-events" />}
+            className="gap-2.5 py-2"
+          >
+            <SquarePen className="text-muted-foreground" />
+            Manage Events
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            render={<Link href="/joined-events" />}
+            className="gap-2.5 py-2"
+          >
+            <CalendarCheck  className="text-muted-foreground" />
+            Joined Events
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={HandleSignOut} variant="destructive" className="gap-2.5 py-2">
+            <LogOut />
+            Log out
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
 
              <Button onClick={HandleSignOut} variant={"destructive"} className='rounded-full'>Sign out</Button>
           </div>
