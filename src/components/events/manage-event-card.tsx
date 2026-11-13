@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CalendarDays, Eye, MapPin, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ECType } from "@/components/types/eventsCard";
+import Link from "next/link";
 
 interface ManageEventCardProps {
   event: ECType;
@@ -61,6 +62,7 @@ export function ManageEventCard({ event }: ManageEventCardProps) {
         </p>
 
         <div className="mt-auto flex flex-wrap gap-2 pt-1">
+         <Link href={`/events/${event._id}`}>
           <Button
             variant="outline"
             className="h-9 rounded-full gap-1.5 px-4"
@@ -68,6 +70,7 @@ export function ManageEventCard({ event }: ManageEventCardProps) {
             <Eye className="size-4" aria-hidden />
             View
           </Button>
+         </Link>
           <Button
             variant="outline"
             className="h-9 rounded-full gap-1.5 px-4"

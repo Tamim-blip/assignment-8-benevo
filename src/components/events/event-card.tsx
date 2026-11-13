@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ECType } from "@/components/types/eventsCard";
+import Link from "next/link";
 
 interface EventCardProps {
   event: ECType;
@@ -56,7 +57,7 @@ export function EventCard({ event }: EventCardProps) {
         {/* <p className="line-clamp-2 text-sm text-muted-foreground">
           {event.description}
         </p> */}
-
+          <Link href={`/events/${event._id}`}>
         <Button
           variant="secondary"
           className="mt-auto bg-[#254F36] w-full  text-white shadow-sm gap-1.5 rounded-full hover:bg-[#193F2D]"
@@ -67,6 +68,7 @@ export function EventCard({ event }: EventCardProps) {
             aria-hidden
           />
         </Button>
+        </Link>
       </div>
     </article>
   );

@@ -66,7 +66,7 @@ export function CreateEventsForm() {
       return;
     }
 
-    console.log(data)
+   
   }
   return (
     <section className="grid w-full flex-1 lg:grid-cols-2">
