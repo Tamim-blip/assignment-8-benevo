@@ -1,12 +1,12 @@
 "use client"
 
 import Image from "next/image";
-import { CalendarDays, Eye, MapPin, Pencil, Trash2 } from "lucide-react";
+import { CalendarDays, Eye, MapPin,  Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ECType } from "@/components/types/eventsCard";
 import Link from "next/link";
 import { toast } from "../ui/toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,12 +18,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { EditDialog } from "../common/editDialog";
 
 interface ManageEventCardProps {
   event: ECType;
 }
 
 export function ManageEventCard({ event }: ManageEventCardProps) {
+
+  const router = useRouter()
 
   const HandleDelete = async() => {
 
@@ -38,8 +41,13 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manage-events/${even
             title : "Successful",
             description: "Your event delete is successful"
         })
-        redirect('/events')
+       router.refresh();
     }else{
+       toast.add({
+        type: "error",
+        title: "Something went wrong",
+        description: "Event is not deleted!",
+      });
 
     }
 }
@@ -108,13 +116,7 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manage-events/${even
             View
           </Button>
          </Link>
-          <Button
-            variant="outline"
-            className="h-9 rounded-full gap-1.5 px-4"
-          >
-            <Pencil className="size-4" aria-hidden />
-            Edit
-          </Button>
+          <EditDialog event={event}></EditDialog>
 
 
 

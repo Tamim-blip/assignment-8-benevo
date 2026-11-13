@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { toast } from "../ui/toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 
@@ -28,7 +28,9 @@ interface ManageEventCardProps {
 
 export  function JoinedEventCard({ event }: ManageEventCardProps) {
 
-    
+    const router = useRouter()
+
+
 const HandleDelete = async() => {
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events/${event._id}`,{
@@ -42,8 +44,13 @@ const HandleDelete = async() => {
             title : "Successful",
             description: "Your event delete is successful"
         })
-        redirect('/events')
+       router.refresh();
     }else{
+         toast.add({
+        type: "error",
+        title: "Something went wrong",
+        description: "Event is not deleted!",
+      });
 
     }
 }

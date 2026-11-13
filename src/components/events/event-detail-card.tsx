@@ -19,7 +19,6 @@ import type { EDType } from "@/components/types/eventDetail";
 import { useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { toast } from "../ui/toast";
-import { useEffect, useState } from "react";
 
 /** Static details shared by every event until the API provides real data. */
 const STATIC_EVENT_DETAILS = {
