@@ -99,7 +99,8 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
   }
 
   const HandleEventJoin = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events`, {
+    if(user){
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -121,6 +122,16 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
         title: "Try again",
         description: " Something went wront",
       })
+
+    }
+    }
+    else{
+       toast.add({
+        type: "error",
+        title: "Login first!",
+        description: "Please login to join this event.",
+      })
+      redirect('/login')
 
     }
   }
