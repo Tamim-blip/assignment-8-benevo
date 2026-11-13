@@ -18,6 +18,7 @@ import {
 import { GitHubIcon, GoogleIcon } from "@/components/auth/icons";
 import { signIn, signUp } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import { toast } from "@/components/ui/toast";
 
 export default function SignUp() {
   const onSubmit = async(e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -35,28 +36,72 @@ export default function SignUp() {
         image : userData.image as string
     })
 
-    if(data){
-        redirect("/")
-    }
-    if(error){
-        console.log(error.message)
-    }
+     if(data){
+      toast.add({
+        type : "success",
+  title: "WellCome",
+  description: "Sign up successfull",
+})
+redirect('/')
+     }
+
+if(error){
+  toast.add({
+    type : "error",
+  title: "Try again",
+  description: "Something went wrong!",
+})
+}
+     
   }
 
   const HandleGoogleSignIn = async() => {
 
-    const data = await signIn.social({
+    const {data, error} = await signIn.social({
         provider : "google"
     })
 
-    console.log(data)
+     if(data){
+      toast.add({
+        type : "success",
+  title: "WellCome",
+  description: "Sign in successfull",
+})
+     }
+
+if(error){
+  toast.add({
+    type : "error",
+  title: "Try again",
+  description: "Something went wrong!",
+})
+}
+     
+
+   
   }
 
   const HandleGitHubSignIn = async() => {
 
-    const data = await signIn.social({
+    const {data, error} = await signIn.social({
         provider : "github"
     })
+
+     if(data){
+      toast.add({
+        type : "success",
+  title: "WellCome",
+  description: "Sign in successfull",
+})
+
+if(error){
+  toast.add({
+    type : "error",
+  title: "Try again",
+  description: "Something went wrong!",
+})
+}
+     }
   }
   return (
     <section className="grid w-full flex-1 lg:grid-cols-2">

@@ -15,6 +15,7 @@ import {
 import { AuthBrandPanel } from "@/components/auth/brand-panel";
 import { useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import { toast } from "@/components/ui/toast";
 
 const eventTypes = [
   "Cleanup",
@@ -62,8 +63,19 @@ export function CreateEventsForm() {
 
     if(data.acknowledged){
       // Clear the form so no stale data lingers after submitting
+      toast.add({
+        type : "success",
+  title: "Success!",
+  description: "Event submited successfuly",
+})
       redirect('/manage-events')
-      return;
+    
+    }else{
+      toast.add({
+        type : "error",
+  title: "Something went wrong",
+  description: "Event is not submited !",
+})
     }
 
    

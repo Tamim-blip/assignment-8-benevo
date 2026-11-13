@@ -16,43 +16,90 @@ import {
 } from "@/components/auth/brand-panel";
 import { GitHubIcon, GoogleIcon } from "@/components/auth/icons";
 import { signIn } from "@/lib/auth-client";
+
+import { toast } from "@/components/ui/toast";
 import { redirect } from "next/navigation";
 
 export default function LoginPage() {
-  const onSubmit = async(e: React.SyntheticEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     const userData = Object.fromEntries(formData.entries())
 
-    const {data, error} = await signIn.email({
-      email : userData.email as string,
-      password : userData.password as string
+    const { data, error } = await signIn.email({
+      email: userData.email as string,
+      password: userData.password as string
     })
 
-    if(data){
-      redirect("/")
+    if (data) {
+      toast.add({
+        type: "success",
+        title: "WellCome",
+        description: "Sign in successfull",
+      })
+      redirect('/')
     }
-    if(error){
-      console.log(error.message)
-    }
-  }
 
-
-  const HandleGoogleSignIn = async() => {
-
-    const data = await signIn.social({
-        provider : "google"
-    })
-
+      if (error) {
+        toast.add({
+          type: "error",
+          title: "Try again",
+          description: "Something went wrong!",
+        })
+      }
     
   }
 
-  const HandleGitHubSignIn = async() => {
 
-    const data = await signIn.social({
-        provider : "github"
+  const HandleGoogleSignIn = async () => {
+
+    const { data, error } = await signIn.social({
+      provider: "google"
     })
+
+    if (data) {
+      toast.add({
+        type: "success",
+        title: "WellCome",
+        description: "Sign in successfull",
+      })
+    }
+
+      if (error) {
+        toast.add({
+          type: "error",
+          title: "Try again",
+          description: "Something went wrong!",
+        })
+      }
+    
+
+
+  }
+
+  const HandleGitHubSignIn = async () => {
+
+    const { data, error } = await signIn.social({
+      provider: "github"
+    })
+
+    if (data) {
+      toast.add({
+        type: "success",
+        title: "WellCome",
+        description: "Sign in successfull",
+      })
+    }
+
+      if (error) {
+        toast.add({
+          type: "error",
+          title: "Try again",
+          description: "Something went wrong!",
+        })
+      }
+    
   }
   return (
     <section className="grid w-full flex-1 lg:grid-cols-2">
@@ -103,7 +150,7 @@ export default function LoginPage() {
               <FieldError />
             </TextField>
 
-            
+
 
             <Button type="submit" className="h-10 w-full rounded-full text-base">
               <LogIn />

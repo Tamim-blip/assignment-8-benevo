@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { toast } from "../ui/toast";
 
 
 
@@ -35,6 +36,11 @@ export  function Navbar() {
   const HandleSignOut =  () => {
 
     signOut()
+    toast.add({
+      type : "success",
+  
+  description: "Sign out successfull",
+})
     redirect('/login')
   }
   

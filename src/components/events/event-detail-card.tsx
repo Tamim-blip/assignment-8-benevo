@@ -1,6 +1,7 @@
+'use client'
 import Image from "next/image";
 import {
-  BadgeCheck,
+
   CalendarDays,
   CheckCircle2,
   MapPin,
@@ -15,6 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 import type { EDType } from "@/components/types/eventDetail";
+import { useSession } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
+import { toast } from "../ui/toast";
 
 /** Static details shared by every event until the API provides real data. */
 const STATIC_EVENT_DETAILS = {
@@ -43,11 +47,11 @@ function formatDate(value: string) {
   return Number.isNaN(date.getTime())
     ? value
     : date.toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
 }
 
 interface EventDetailCardProps {
@@ -60,6 +64,47 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
   const spotsLeft = Math.max(capacity - volunteers, 0);
   const joinedPercent = Math.round((volunteers / capacity) * 100);
   const formattedDate = formatDate(event.eventDate);
+
+
+  const { data: session } = useSession()
+  const user = session?.user
+
+
+  const { _id, ...allData } = event
+
+  const joinData = {
+    ...allData,
+    join_user_name: user?.name,
+    join_user_email: user?.email,
+    join_user_image: user?.image,
+  }
+
+  const HandleEventJoin = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(joinData)
+    })
+
+    const data = await res.json()
+    if (data.acknowledged) {
+      toast.add({
+        type: "success",
+        title: "Success",
+        description: "You have joined an event",
+      })
+      redirect('/joined-events')
+    }else{
+      toast.add({
+        type: "error",
+        title: "Try again",
+        description: " Something went wront",
+      })
+
+    }
+  }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:items-start">
@@ -140,9 +185,9 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
           <div className="min-w-0">
             <p className="flex items-center gap-1.5 truncate font-semibold">
               {event.name}
-            
+
             </p>
-           
+
           </div>
         </div>
 
@@ -167,7 +212,7 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
           <Progress value={joinedPercent} className="mt-2" />
         </div>
 
-        <Button className="h-10 w-full gap-2 rounded-full text-base">
+        <Button onClick={HandleEventJoin} className="h-10 w-full gap-2 rounded-full text-base">
           <Users className="size-4" aria-hidden />
           Join Event
         </Button>
