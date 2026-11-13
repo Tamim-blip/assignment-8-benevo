@@ -19,10 +19,11 @@ import type { EDType } from "@/components/types/eventDetail";
 import { useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { toast } from "../ui/toast";
+import { useEffect, useState } from "react";
 
 /** Static details shared by every event until the API provides real data. */
 const STATIC_EVENT_DETAILS = {
-  volunteers: 10,
+  volunteers: 67,
   capacity: 150,
   highlights: [
     "Open to everyone — bring a friend along",
@@ -33,7 +34,7 @@ const STATIC_EVENT_DETAILS = {
 };
 
 function initials(name: string) {
-  return name
+  return (name ?? "")
     .split(" ")
     .map((part) => part[0])
     .filter(Boolean)
@@ -60,7 +61,26 @@ interface EventDetailCardProps {
 
 /** Event detail view: hero, description, highlights and organizer sidebar. */
 export function EventDetailCard({ event }: EventDetailCardProps) {
-  const { volunteers, capacity, highlights } = STATIC_EVENT_DETAILS;
+
+  // const [joinedData, setJoinedData] = useState([])
+  // useEffect( () => {
+
+  //   const fetchData = async() => {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events/${event.eventType}`)
+  //     const totalJoin = await res.json()
+  //     setJoinedData(totalJoin)
+  //   }
+  //   fetchData()
+    
+
+  // },[])
+
+  // console.log(joinedData)
+
+  // const volunteers = joinedData.length
+
+
+  const {volunteers,  capacity, highlights } = STATIC_EVENT_DETAILS;
   const spotsLeft = Math.max(capacity - volunteers, 0);
   const joinedPercent = Math.round((volunteers / capacity) * 100);
   const formattedDate = formatDate(event.eventDate);
@@ -173,23 +193,29 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
       <aside className="flex flex-col gap-5 rounded-2xl border bg-card p-6 lg:sticky lg:top-24">
         <h2 className="text-lg font-semibold tracking-tight">Organizer</h2>
 
-        <div className="flex items-center gap-3">
-          <Avatar className="size-12">
-            {event.image ? (
-              <AvatarImage src={event.image} alt={event.name} />
-            ) : null}
-            <AvatarFallback className="bg-primary text-sm text-primary-foreground">
-              {initials(event.name)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="min-w-0">
-            <p className="flex items-center gap-1.5 truncate font-semibold">
-              {event.name}
+        {event.name || event.email ? (
+          <div className="flex items-center gap-3">
+            <Avatar className="size-12">
+              {event.image ? (
+                <AvatarImage src={event.image} alt={event.name} />
+              ) : null}
+              <AvatarFallback className="bg-primary text-sm text-primary-foreground">
+                {initials(event.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="flex items-center gap-1.5 truncate font-semibold">
+                {event.name}
 
-            </p>
+              </p>
 
+            </div>
           </div>
-        </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Organizer details are not available for this event.
+          </p>
+        )}
 
         <div className="flex flex-col gap-2.5 rounded-xl bg-muted/50 p-4 text-sm">
           <span className="flex items-center gap-2.5">

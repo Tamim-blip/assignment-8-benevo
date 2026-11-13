@@ -1,14 +1,51 @@
+"use client"
+
 import Image from "next/image";
 import { CalendarDays, Eye, MapPin, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ECType } from "@/components/types/eventsCard";
 import Link from "next/link";
+import { toast } from "../ui/toast";
+import { redirect } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface ManageEventCardProps {
   event: ECType;
 }
 
 export function ManageEventCard({ event }: ManageEventCardProps) {
+
+  const HandleDelete = async() => {
+
+const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manage-events/${event._id}`,{
+        method : "DELETE"
+    })
+
+    const data = await res.json()
+    if(data.deletedCount > 0){
+        toast.add({
+            type : "success",
+            title : "Successful",
+            description: "Your event delete is successful"
+        })
+        redirect('/events')
+    }else{
+
+    }
+}
+
+
+
   const eventDate = new Date(event.eventDate);
   const formattedDate = Number.isNaN(eventDate.getTime())
     ? event.eventDate
@@ -78,14 +115,36 @@ export function ManageEventCard({ event }: ManageEventCardProps) {
             <Pencil className="size-4" aria-hidden />
             Edit
           </Button>
-          <Button
+
+
+
+          <AlertDialog>
+      <AlertDialogTrigger render={<Button
+          
             variant="destructive"
             className="h-9 rounded-full gap-1.5 px-4"
             aria-label={`Delete ${event.title}`}
           >
             <Trash2 className="size-4" aria-hidden />
             Delete
-          </Button>
+          </Button> } />
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+           event from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={HandleDelete}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+          
+
+
         </div>
       </div>
     </article>
