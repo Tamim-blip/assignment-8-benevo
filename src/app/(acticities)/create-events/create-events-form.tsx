@@ -45,8 +45,11 @@ export function CreateEventsForm() {
 
     const userData = Object.fromEntries(formData.entries())
 
+  
+
     const allData = {
       ...userData,
+      
       ...user
     }
 

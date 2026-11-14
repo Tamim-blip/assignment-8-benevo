@@ -1,4 +1,4 @@
-import { EventCard } from "@/components/events/event-card";
+import { EventsBrowser } from "@/components/events/events-browser";
 import { SectionHeading } from "@/components/common/section-heading";
 import type { ECType } from "@/components/types/eventsCard";
 
@@ -15,17 +15,7 @@ export default async function EventsPage() {
         description="Browse social service events happening in your local area."
       />
 
-      {data.length === 0 ? (
-        <p className="mt-12 text-center text-base text-muted-foreground">
-          No events have been posted yet. Check back soon!
-        </p>
-      ) : (
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {data.map((event) => (
-            <EventCard key={event._id} event={event} />
-          ))}
-        </div>
-      )}
+      <EventsBrowser events={data} />
     </section>
   );
 }
