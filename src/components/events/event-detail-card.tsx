@@ -99,42 +99,52 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
   }
 
   const HandleEventJoin = async () => {
-    if(user){
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(joinData)
-    })
+   
+      if (!user){
+        toast.add({
+          type: "error",
+          title: "Please log in",
+          description: "You need to log in to join this event.",
+        });
+        redirect("/login");
 
-    const data = await res.json()
-    if (data.acknowledged) {
-      toast.add({
-        type: "success",
-        title: "Joined!",
-        description: "You have signed up for this event.",
-      })
-      redirect('/joined-events')
-    }else{
-      toast.add({
+      }
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(joinData),
+        });
+
+        const data = await res.json();
+
+        if (data.acknowledged) {
+          toast.add({
+            type: "success",
+            title: "Joined!",
+            description: "You have signed up for this event.",
+          });
+          redirect("/joined-events");
+        }
+
+        if (!res.ok) {
+          toast.add({
         type: "error",
         title: "Couldn't join event",
-        description: "Something went wrong. Please try again.",
+        description:  data.message || "Something went wrong",
       })
+        }
 
-    }
-    }
-    else{
-       toast.add({
-        type: "error",
-        title: "Please log in",
-        description: "You need to log in to join this event.",
-      })
-      redirect('/login')
+        
+     
+    
 
-    }
-  }
+     
+       
+
+   
+  };
 
   return (
     <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:items-start">
