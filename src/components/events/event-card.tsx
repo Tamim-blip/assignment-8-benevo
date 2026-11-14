@@ -59,8 +59,7 @@ export function EventCard({ event }: EventCardProps) {
         </p> */}
           <Link href={`/events/${event._id}`}>
         <Button
-          variant="secondary"
-          className="mt-auto bg-[#254F36] w-full  text-white shadow-sm gap-1.5 rounded-full hover:bg-[#193F2D]"
+          className="mt-auto w-full gap-1.5 rounded-full"
         >
           View
           <ArrowRight

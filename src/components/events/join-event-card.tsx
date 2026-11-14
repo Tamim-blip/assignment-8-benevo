@@ -41,15 +41,15 @@ const HandleDelete = async() => {
     if(data.deletedCount > 0){
         toast.add({
             type : "success",
-            title : "Successful",
-            description: "Your event delete is successful"
+            title : "Left event",
+            description: "You have left this event successfully."
         })
        router.refresh();
     }else{
          toast.add({
         type: "error",
-        title: "Something went wrong",
-        description: "Event is not deleted!",
+        title: "Couldn't leave event",
+        description: "Something went wrong. Please try again.",
       });
 
     }

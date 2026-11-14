@@ -65,16 +65,16 @@ export function CreateEventsForm() {
       // Clear the form so no stale data lingers after submitting
       toast.add({
         type : "success",
-  title: "Success!",
-  description: "Event submited successfuly",
+  title: "Event created!",
+  description: "Your event has been submitted successfully.",
 })
       redirect('/manage-events')
     
     }else{
       toast.add({
         type : "error",
-  title: "Something went wrong",
-  description: "Event is not submited !",
+  title: "Couldn't create event",
+  description: "Something went wrong. Please try again.",
 })
     }
 

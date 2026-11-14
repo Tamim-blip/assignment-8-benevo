@@ -12,10 +12,10 @@ export function FeatureCard({
   icon: Icon,
   title,
   description,
-  chipClassName = "bg-[#E4F0E5] text-[#28613B]",
+  chipClassName = "bg-primary/10 text-primary",
 }: FeatureCardProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-[#DCE5D8] bg-[#FFFFFF] p-6 text-[#26382B] transition-shadow hover:shadow-md hover:shadow-[#315C3B]/10">
+    <div className="flex flex-col gap-3 rounded-2xl border bg-card p-6 text-foreground transition-shadow hover:shadow-md hover:shadow-foreground/10">
       <span
         className={cn(
           "flex size-11 items-center justify-center rounded-full",
@@ -25,9 +25,9 @@ export function FeatureCard({
         <Icon className="size-5" aria-hidden />
       </span>
 
-      <h3 className="text-lg font-semibold text-[#26382B]">{title}</h3>
+      <h3 className="text-lg font-semibold text-foreground">{title}</h3>
 
-      <p className="text-sm text-[#718071]">{description}</p>
+      <p className="text-sm text-muted-foreground">{description}</p>
     </div>
   );
 }

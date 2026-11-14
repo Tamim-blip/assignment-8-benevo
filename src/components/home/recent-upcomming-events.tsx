@@ -17,7 +17,7 @@ const RecentUpcomingEvents = async () => {
       />
 
       {data.length === 0 ? (
-        <p className="mt-12 text-center text-base text-[#718071]">
+        <p className="mt-12 text-center text-base text-muted-foreground">
           No events have been posted yet. Check back soon!
         </p>
       ) : (

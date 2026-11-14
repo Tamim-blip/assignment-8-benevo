@@ -84,8 +84,8 @@ export function EditDialog({ event }: EditDialogProps) {
     } else {
       toast.add({
         type: "error",
-        title: "Something went wrong",
-        description: "Event is not updated!",
+        title: "Couldn't update event",
+        description: "Something went wrong. Please try again.",
       });
     }
   };

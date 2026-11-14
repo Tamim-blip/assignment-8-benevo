@@ -38,15 +38,15 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manage-events/${even
     if(data.deletedCount > 0){
         toast.add({
             type : "success",
-            title : "Successful",
-            description: "Your event delete is successful"
+            title : "Event deleted",
+            description: "Your event has been deleted successfully."
         })
        router.refresh();
     }else{
        toast.add({
         type: "error",
-        title: "Something went wrong",
-        description: "Event is not deleted!",
+        title: "Couldn't delete event",
+        description: "Something went wrong. Please try again.",
       });
 
     }

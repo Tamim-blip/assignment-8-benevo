@@ -9,28 +9,28 @@ const features = [
     title: "Create Events",
     description:
       "Organizers can list plantation drives, clean-ups, and donation camps in minutes.",
-    chipClassName: "bg-[#E4F0E5] text-[#28613B]",
+    chipClassName: "bg-primary/10 text-primary",
   },
   {
     icon: HandHeart,
     title: "Join as a Volunteer",
     description:
       "Find causes you care about and sign up with a single tap — no paperwork.",
-    chipClassName: "bg-[#F8E9DD] text-[#A65F36]",
+    chipClassName: "bg-accent/15 text-accent",
   },
   {
     icon: MapPin,
     title: "Discover Nearby",
     description:
       "See what's happening in your local area, from winter clothing drives to tutoring.",
-    chipClassName: "bg-[#E8EEE3] text-[#526C4D]",
+    chipClassName: "bg-secondary/60 text-secondary-foreground",
   },
   {
     icon: TrendingUp,
     title: "Track Your Impact",
     description:
       "Watch hours served and lives touched grow with every event you join.",
-    chipClassName: "bg-[#F1EBDD] text-[#806A42]",
+    chipClassName: "bg-foreground/10 text-foreground",
   },
 ];
 

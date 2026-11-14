@@ -112,15 +112,15 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
     if (data.acknowledged) {
       toast.add({
         type: "success",
-        title: "Success",
-        description: "You have joined an event",
+        title: "Joined!",
+        description: "You have signed up for this event.",
       })
       redirect('/joined-events')
     }else{
       toast.add({
         type: "error",
-        title: "Try again",
-        description: " Something went wront",
+        title: "Couldn't join event",
+        description: "Something went wrong. Please try again.",
       })
 
     }
@@ -128,8 +128,8 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
     else{
        toast.add({
         type: "error",
-        title: "Login first!",
-        description: "Please login to join this event.",
+        title: "Please log in",
+        description: "You need to log in to join this event.",
       })
       redirect('/login')
 

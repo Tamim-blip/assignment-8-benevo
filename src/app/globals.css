@@ -134,7 +134,7 @@
 /* HeroUI theme bridge — retarget HeroUI tokens to the Benevo palette.
    Scoped to .heroui-scope (auth forms) because --muted means different
    things in HeroUI (muted text) vs shadcn (muted background). */
-.herioui-scope {
+.heroui-scope {
   --accent: oklch(0.7 0.155 60);                 /* orange */
   --accent-hover: oklch(0.65 0.15 60);
   --accent-foreground: oklch(0.99 0.005 95);
@@ -148,9 +148,13 @@
 }
 
 .dark .heroui-scope {
+  --accent: oklch(0.72 0.16 60);                 /* lifted orange */
+  --accent-hover: oklch(0.66 0.155 60);
+  --accent-foreground: oklch(0.99 0.005 95);
   --default: oklch(0.3 0.025 145);
   --default-hover: oklch(0.34 0.025 145);
   --default-foreground: oklch(0.972 0.014 95);
   --field-background: oklch(0.26 0.025 150);
   --field-hover: oklch(0.3 0.025 145);
+  --danger: oklch(0.704 0.191 22.216);
 }

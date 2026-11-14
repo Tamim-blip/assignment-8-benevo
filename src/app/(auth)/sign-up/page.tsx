@@ -39,8 +39,8 @@ export default function SignUp() {
      if(data){
       toast.add({
         type : "success",
-  title: "WellCome",
-  description: "Sign up successfull",
+  title: "Welcome to Benevo!",
+  description: "Your account has been created successfully.",
 })
 redirect('/')
      }
@@ -48,8 +48,8 @@ redirect('/')
 if(error){
   toast.add({
     type : "error",
-  title: "Try again",
-  description: "Something went wrong!",
+  title: "Sign up failed",
+  description: "Please check your details and try again.",
 })
 }
      
@@ -64,16 +64,16 @@ if(error){
      if(data){
       toast.add({
         type : "success",
-  title: "WellCome",
-  description: "Sign in successfull",
+  title: "Welcome to Benevo!",
+  description: "You have signed up with Google successfully.",
 })
      }
 
 if(error){
   toast.add({
     type : "error",
-  title: "Try again",
-  description: "Something went wrong!",
+  title: "Google sign-up failed",
+  description: "Google sign-up was cancelled or couldn't complete.",
 })
 }
      
@@ -90,18 +90,18 @@ if(error){
      if(data){
       toast.add({
         type : "success",
-  title: "WellCome",
-  description: "Sign in successfull",
+  title: "Welcome to Benevo!",
+  description: "You have signed up with GitHub successfully.",
 })
+     }
 
 if(error){
   toast.add({
     type : "error",
-  title: "Try again",
-  description: "Something went wrong!",
+  title: "GitHub sign-up failed",
+  description: "GitHub sign-up was cancelled or couldn't complete.",
 })
 }
-     }
   }
   return (
     <section className="grid w-full flex-1 lg:grid-cols-2">

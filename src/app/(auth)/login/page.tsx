@@ -35,8 +35,8 @@ export default function LoginPage() {
     if (data) {
       toast.add({
         type: "success",
-        title: "WellCome",
-        description: "Sign in successfull",
+        title: "Welcome back!",
+        description: "You have signed in successfully.",
       })
       redirect('/')
     }
@@ -44,8 +44,8 @@ export default function LoginPage() {
       if (error) {
         toast.add({
           type: "error",
-          title: "Try again",
-          description: "Something went wrong!",
+          title: "Sign in failed",
+          description: "Please check your email and password.",
         })
       }
     
@@ -61,16 +61,16 @@ export default function LoginPage() {
     if (data) {
       toast.add({
         type: "success",
-        title: "WellCome",
-        description: "Sign in successfull",
+        title: "Welcome back!",
+        description: "You have signed in with Google successfully.",
       })
     }
 
       if (error) {
         toast.add({
           type: "error",
-          title: "Try again",
-          description: "Something went wrong!",
+          title: "Google sign-in failed",
+          description: "Google sign-in was cancelled or couldn't complete.",
         })
       }
     
@@ -87,16 +87,16 @@ export default function LoginPage() {
     if (data) {
       toast.add({
         type: "success",
-        title: "WellCome",
-        description: "Sign in successfull",
+        title: "Welcome back!",
+        description: "You have signed in with GitHub successfully.",
       })
     }
 
       if (error) {
         toast.add({
           type: "error",
-          title: "Try again",
-          description: "Something went wrong!",
+          title: "GitHub sign-in failed",
+          description: "GitHub sign-in was cancelled or couldn't complete.",
         })
       }
     

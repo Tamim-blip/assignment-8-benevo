@@ -38,22 +38,22 @@ export  function Navbar() {
     signOut()
     toast.add({
       type : "success",
-  
-  description: "Sign out successfull",
+      title: "Signed out",
+      description: "You have been signed out successfully.",
 })
     redirect('/login')
   }
   
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#DCE8DC] bg-[#FFFFFF] text-[#292D29]">
+    <header className="sticky top-0 z-50 w-full border-b bg-card text-foreground">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Left: logo + app name */}
         <Link
           href="/"
           className="flex items-center gap-2.5 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          <Sprout className="size-7 text-[#292D29]" aria-hidden />
-          <span className="text-lg font-bold text-[#173F35] tracking-tight sm:text-xl">
+          <Sprout className="size-7 text-primary" aria-hidden />
+          <span className="text-lg font-bold text-primary tracking-tight sm:text-xl">
             Benevo
           </span>
         </Link>
@@ -62,7 +62,7 @@ export  function Navbar() {
         <nav aria-label="Main">
           <Link
             href="/events"
-            className="text-xs font-semibold uppercase text-[#292D29] tracking-widest transition-colors hover:text-[#75A77A] sm:text-sm"
+            className="text-xs font-semibold uppercase text-foreground tracking-widest transition-colors hover:text-accent sm:text-sm"
           >
             Upcoming Events
           </Link>
@@ -73,11 +73,8 @@ export  function Navbar() {
           <ThemeToggle />
          {
           user? <>
-
-          <div className="flex items-center gap-4">
-
-             <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="rounded-full ring-2 ring-[#DCE8DC] hover:ring-[#75A77A]"><Avatar>
+          <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="rounded-full ring-2 ring-border hover:ring-primary/40"><Avatar>
           <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? "Profile"} />
           <AvatarFallback className="bg-primary text-xs text-primary-foreground">
             {(user?.name ?? "U")
@@ -143,17 +140,13 @@ export  function Navbar() {
       </DropdownMenuContent>
     </DropdownMenu>
 
-             <Button onClick={HandleSignOut} variant={"destructive"} className='rounded-full'>Sign out</Button>
-          </div>
-
-
           </> : <>
            <Link
             href="/login"
             aria-label="Log in"
             className={cn(
               buttonVariants({ variant: "default" }),
-              "h-9 rounded-full bg-[#254F36] px-4 text-primary-foreground hover:bg-[#193F2D] sm:h-10 sm:px-5",
+              "h-9 rounded-full px-4 sm:h-10 sm:px-5",
             )}
           >
             Login
