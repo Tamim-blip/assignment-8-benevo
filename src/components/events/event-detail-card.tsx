@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 import type { EDType } from "@/components/types/eventDetail";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { toast } from "../ui/toast";
 
@@ -109,10 +109,15 @@ export function EventDetailCard({ event }: EventDetailCardProps) {
         redirect("/login");
 
       }
+
+
+      const {data : jwtToken} = await authClient.token()
+      const token = jwtToken?.token
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            authorization : `Bearer ${token}`
           },
           body: JSON.stringify(joinData),
         });

@@ -5,6 +5,7 @@ import { EventDetailCard } from "@/components/events/event-detail-card";
 import { Button } from "@/components/ui/button";
 import type { EDType } from "@/components/types/eventDetail";
 
+
 export default async function EventDetail({
   params,
 }: {
@@ -12,9 +13,10 @@ export default async function EventDetail({
 }) {
   const { eventID } = await params;
 
+  
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/events/${eventID}`,
-  );
+    `${process.env.NEXT_PUBLIC_API_URL}/events/${eventID}`);
   if (!res.ok) notFound();
   const data: EDType | null = await res.json().catch(() => null);
   if (!data) notFound();

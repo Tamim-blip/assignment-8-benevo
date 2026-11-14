@@ -11,9 +11,18 @@ export default async function ManageEventsPage() {
 
   const email = session?.user?.email;
 
+  const jwtToken = await auth.api.getToken({
+    headers: await headers(),
+  });
+
+  const token = jwtToken?.token
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/manage-events/${email}`,
-  );
+    `${process.env.NEXT_PUBLIC_API_URL}/manage-events/${email}`, {
+      headers : {
+        authorization : `Bearer ${token}`
+      }
+    });
   const data: ECType[] = await res.json().catch(() => []);
 
   return (

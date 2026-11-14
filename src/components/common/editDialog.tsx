@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
 import type { ECType } from "@/components/types/eventsCard";
+import { authClient } from "@/lib/auth-client";
 
 const eventTypes = [
   "Cleanup",
@@ -58,13 +59,17 @@ export function EditDialog({ event }: EditDialogProps) {
       new FormData(e.currentTarget).entries(),
     );
 
+    const {data : jwtToken} = await authClient.token()
+    const token = jwtToken?.token
+
    
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/manage-events/${event._id}`,
       {
         method: "PATCH",
         headers: {
-             "Content-Type": "application/json"
+             "Content-Type": "application/json",
+             authorization : `Bearer ${token}`
              },
         body: JSON.stringify(formData),
       },

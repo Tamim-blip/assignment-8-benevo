@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { toast } from "../ui/toast";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 
 
@@ -33,8 +34,14 @@ export  function JoinedEventCard({ event }: ManageEventCardProps) {
 
 const HandleDelete = async() => {
 
+  const {data : jwtToken} = await authClient.token()
+  const token = jwtToken?.token
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joined-events/${event._id}`,{
-        method : "DELETE"
+        method : "DELETE",
+        headers : {
+          authorization : `Bearer ${token}`
+        }
     })
 
     const data = await res.json()
