@@ -13,7 +13,7 @@ import {
   TextField,
 } from "@heroui/react";
 import { AuthBrandPanel } from "@/components/auth/brand-panel";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 
@@ -38,6 +38,7 @@ export function CreateEventsForm() {
   const user = session?.user
 
 
+
   const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -53,10 +54,16 @@ export function CreateEventsForm() {
       ...user
     }
 
+
+    const {data : jwtToken} = await authClient.token()
+    const token = jwtToken?.token
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/create-events`,{
       method : "POST",
       headers : {
-        "Content-Type" : "application/json"
+        "Content-Type" : "application/json",
+        authorization : `Bearer ${token}`
+
       },
       body : JSON.stringify(allData)
     })
