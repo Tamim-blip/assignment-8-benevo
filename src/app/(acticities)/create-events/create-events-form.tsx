@@ -121,6 +121,7 @@ export function CreateEventsForm() {
               <Label>Description</Label>
               <TextArea
                 id="description"
+                required
                 placeholder="What will volunteers do? What should they bring?"
                 className="min-h-24"
               />
