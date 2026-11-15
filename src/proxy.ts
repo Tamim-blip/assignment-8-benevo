@@ -23,6 +23,7 @@ export const config = {
     "/create-events",
     "/joined-events",
     "/joined-events/:path",
-    "/manage-events"
+    "/manage-events",
+    "/profile"
   ],
 }

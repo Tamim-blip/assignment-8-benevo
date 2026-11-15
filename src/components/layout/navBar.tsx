@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Sprout, CalendarCheck, CalendarPlus, LogOut, SquarePen } from "lucide-react";
+import { Sprout, CalendarCheck, CalendarPlus, LogOut, SquarePen, CircleUserRound } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -121,6 +121,13 @@ export  function Navbar() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem
+            render={<Link href="/profile" />}
+            className="gap-2.5 py-2"
+          >
+            <CircleUserRound className="text-muted-foreground" />
+            Profile
+          </DropdownMenuItem>
           <DropdownMenuItem
             render={<Link href="/create-events" />}
             className="gap-2.5 py-2"
