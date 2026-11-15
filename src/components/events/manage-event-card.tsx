@@ -140,15 +140,15 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manage-events/${even
           </Button> } />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Delete this event?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-           event from our servers.
+            “{event.title}” will be permanently deleted, and all volunteer
+            sign-ups will be removed. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={HandleDelete}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={HandleDelete}>Delete event</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

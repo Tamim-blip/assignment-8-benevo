@@ -142,15 +142,16 @@ const HandleDelete = async() => {
           </Button> } />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Leave this event?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-           event from our servers.
+            You are about to leave “{event.title}”. Your spot will be freed up
+            for another volunteer, and this event will be removed from your
+            joined events list. You can rejoin later if you change your mind.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={HandleDelete}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={HandleDelete}>Leave event</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

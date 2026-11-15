@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from "react";
 import Link from "next/link";
 import { Sprout, CalendarCheck, CalendarPlus, LogOut, SquarePen } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -22,6 +23,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { toast } from "../ui/toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 
 
@@ -31,6 +42,8 @@ export  function Navbar() {
   const {data : session } = useSession()
 
   const user = session?.user
+
+  const [signOutOpen, setSignOutOpen] = useState(false)
 
 
   const HandleSignOut =  () => {
@@ -132,13 +145,38 @@ export  function Navbar() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={HandleSignOut} variant="destructive" className="gap-2.5 py-2">
+          <DropdownMenuItem onClick={() => setSignOutOpen(true)} variant="destructive" className="gap-2.5 py-2">
             <LogOut />
             Log out
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
+
+    <AlertDialog open={signOutOpen} onOpenChange={setSignOutOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Sign out of Benevo?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You will be signed out of this account and returned to the login
+            page. You will need to sign in again to create, join, or manage
+            events. Any events you have created or joined will be waiting for
+            you.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={() => {
+              setSignOutOpen(false);
+              HandleSignOut();
+            }}
+          >
+            Sign out
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
 
           </> : <>
            <Link
