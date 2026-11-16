@@ -7,7 +7,7 @@ export default async function EventsPage() {
 
   
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recent-events`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/recent-events`,{cache : "no-store"});
   const data: ECType[] = await res.json().catch(() => []);
 
   return (
